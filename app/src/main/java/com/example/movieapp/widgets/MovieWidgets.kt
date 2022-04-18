@@ -1,6 +1,5 @@
 package com.example.movieapp
 
-import android.widget.HorizontalScrollView
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -11,6 +10,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -25,7 +25,7 @@ import com.example.movieapp.data.getMovies
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MovieRow(showDetails: Boolean, movie: Movie, onItemClick: (String) -> Unit){
+fun MovieRow(showDetails: Boolean, movie: Movie, onItemClick: (String) -> Unit = {}, favIcon: @Composable () -> Unit = {}){
     var showDetails by remember{
         mutableStateOf(showDetails)
     }
@@ -47,7 +47,6 @@ fun MovieRow(showDetails: Boolean, movie: Movie, onItemClick: (String) -> Unit){
                     .padding(12.dp),
                 elevation = 6.dp
             ){
-                //Icon(imageVector = Icons.Default.AccountBox , contentDescription ="movie image" )
                 Image(
                     painter = rememberImagePainter(
                         data = movie.images[0],
@@ -71,11 +70,13 @@ fun MovieRow(showDetails: Boolean, movie: Movie, onItemClick: (String) -> Unit){
                 ) {
                     MovieDetails(movie)
                 }
+                Icons.Default.FavoriteBorder
                 when(showDetails){
                     true -> Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "arrow down", modifier = Modifier.clickable { showDetails =! showDetails  })
                     false-> Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "arrow up", modifier = Modifier.clickable { showDetails =! showDetails  })
                 }
             }
+            favIcon()
         }
     }
 }
